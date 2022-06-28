@@ -5,7 +5,8 @@
 </head>
 <body>
     <h1>Action-x86_64</h1>
-    <h2>本地Lede编译项目</h2>
+    <h2>云Lede编译项目，fork至自己的账户下，修改并添加自己的.config文件即可</h2>
+    <h2>前往ACtions界面BUild openwrt，点击Run workflow即可</h2>
     <hr size="3px" color="black"/>
     <h5>.config文件为在编译Openwrt完整操作系统前的生成的配置文件，根据个人需求修改。</h5>
     <hr size="3px" color="black"/>
