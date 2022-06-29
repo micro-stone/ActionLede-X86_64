@@ -12,14 +12,17 @@ name: Build OpenWrt
 
 on:
   repository_dispatch:
-  schedule:
-    - cron: 15 12 * * *
   workflow_dispatch:
     inputs:
       ssh:
         description: 'SSH connection to Actions'
         required: false
         default: 'false'
+
+ on:
+  workflow_dispatch:
+  schedule:
+    - cron: 20 12 * * *       
 # on:
 #   workflow_dispatch:
 #     inputs:
