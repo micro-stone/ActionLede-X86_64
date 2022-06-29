@@ -54,9 +54,9 @@ jobs:
         working-directory:
         run: |
           df -hT $PWD
-          git clone https://github.com/coolsnowwolf/lede.git
+          mkdir lede
           cd lede
-          vim feeds.conf.default
+          git clone https://github.com/coolsnowwolf/lede.git
 
       - name: Update feeds
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
