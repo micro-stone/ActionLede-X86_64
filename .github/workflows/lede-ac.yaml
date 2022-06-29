@@ -17,11 +17,6 @@ on:
   schedule:
     - cron: 0 20 * * *
 
-env:
-  CONFIG_FILE: .config
-  DIY_P1_SH: diy-part1.sh
-  TZ: Asia/Shanghai
-
 jobs:
 
   build_openwrt:
@@ -61,15 +56,15 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: Load custom configuration
-      run: |
-        [ -e files ] && mv files lede/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE lede/.config
-        cd lede
-        sed -i 's/10.10.10.2/192.168.50.5/g' package/base-files/files/bin/config_generate
-
       - name: Generate configuration file
         run: make defconfig
+
+      - name: Load custom configuration
+        run: |
+          [ -e .config ] && mv .config lede/.config
+          cd lede
+          sed -i 's/10.10.10.2/192.168.50.5/g' package/base-files/files/bin/config_generate
+        
 
       - name: Make download
         run: |
