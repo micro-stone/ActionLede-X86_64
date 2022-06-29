@@ -7,8 +7,7 @@
     <h1>Action-x86_64 云Lede编译项目</h1>
     <h3>fork至自己的账户,修改并添加自己的.config文件</h3>
     <h5>.config文件为在编译Openwrt完整操作系统前的生成的配置文件，根据个人需求修改。</h5>
-    <h5>添加需要的插件源，按照格式填入diy-part1.sh
-        格式：echo 'src-git <name>  <地址>' >>feeds.conf.default</h5>
+    <h5>添加需要的插件源，按照格式填入diy-part1.sh<br />格式：echo 'src-git <name>  <地址>' >>feeds.conf.default</h5>
     <h5>修改固件默认ip地址，请修改diy-part2.sh</h5>
     <h3>前往ACtions界面BUild openwrt，点击Run workflow即可</h3>
     <hr size="1px" color="black"/>
