@@ -19,7 +19,7 @@ on:
         required: false
         default: 'false'     
   schedule:
-    - cron: 50 8 * * *
+    - cron: 0 9 * * *
 # on:
 #   workflow_dispatch:
 #     inputs:
