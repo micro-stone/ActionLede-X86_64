@@ -13,7 +13,7 @@ name: Build OpenWrt
 on:
   repository_dispatch:
   schedule:
-    - cron: 0 9 * * *
+    - cron: 15 12 * * *
   workflow_dispatch:
     inputs:
       ssh:
