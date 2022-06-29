@@ -50,8 +50,6 @@ jobs:
 
       - name: Update feeds
         run: |
-          sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' ./feeds.conf.default
-          sed -i '$a src-git small https://github.com/kenzok8/small' ./feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -65,7 +63,6 @@ jobs:
           cd lede
           sed -i 's/10.10.10.2/192.168.50.5/g' package/base-files/files/bin/config_generate
         
-
       - name: Make download
         run: |
           make download -j8
@@ -73,7 +70,7 @@ jobs:
 
       - name: Compile firmware
         run: |
-          make -j$(nproc) || make -j1 V=s
+          make -j$(nproc) || make -j4 V=s
           echo "======================="
           echo "Space usage:"
           echo "======================="
