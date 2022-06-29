@@ -9,7 +9,7 @@
     <h5>.config文件为在编译Openwrt完整操作系统前的生成的配置文件，根据个人需求修改。</h5>
     <h5>添加需要的插件源，按照格式填入diy-part1.sh<br />格式：echo 'src-git <文件夹名称>  <源地址>' >>feeds.conf.default</h5>
     <h5>修改固件默认ip地址，请修改diy-part2.sh</h5>
-    <h3>前往ACtions界面BUild openwrt，点击Run workflow即可</h3>
+    <h3>前往ACtions界面Build openwrt，点击Run workflow即可</h3>
     <hr size="1px" color="black"/>
     <h3>本项目基于Ubuntu-20.04（也可以使用Windows下子系统wsl2完成完整的操作编译）
     <br /><br />详细介绍页（本地操作或者云服务器操作）：<a href="http://www.huadao.art/">Jayha的blog</a></h3>
