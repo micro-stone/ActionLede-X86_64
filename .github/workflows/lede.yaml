@@ -17,11 +17,7 @@ on:
       ssh:
         description: 'SSH connection to Actions'
         required: false
-        default: 'false'
-  schedule:
-    - cron: 30 8 * * *        
-
-name: amd64-compiler
+        default: 'false'     
 
 # on:
 #   workflow_dispatch:
@@ -30,6 +26,8 @@ name: amd64-compiler
 #         description: '手动触发一次编译'
 #   schedule:
 #     - cron: 0 8 * * 6
+
+name: amd64-compiler
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
