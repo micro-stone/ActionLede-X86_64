@@ -30,7 +30,8 @@ jobs:
       uses: actions/checkout@main
 
     - name: Build environment
-      uses: 
+    env:
+      DEBIAN_FRONTEND: noninteractive
 
       run: |
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
