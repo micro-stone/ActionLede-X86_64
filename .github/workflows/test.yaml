@@ -116,10 +116,10 @@ jobs:
         mkdir -p ./artifact/firmware
         mkdir -p ./artifact/package
         mkdir -p ./artifact/buildinfo
-        rm -rf $(find ./bin/targets/ -type d -name "packages")
-        cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
-        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
-        cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
+        rm -rf ./bin/targets/packages
+        cp -rf ./bin/targets/ ./artifact/firmware/
+        cp -rf ./bin/packages/ ./artifact/package/
+        cp -rf ./bin/targets/ ./artifact/buildinfo/
 
     - name: Deliver buildinfo
       uses: actions/upload-artifact@v2
@@ -147,6 +147,7 @@ jobs:
         file: ./artifact/firmware/*
         tag: ${{ github.ref }}
         file_glob: true
+
     # - name: 检查存储情况
     #   if: (!cancelled())
     #   run: df -hT
