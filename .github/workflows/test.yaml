@@ -51,12 +51,10 @@ jobs:
         sudo mkdir -p /lede
         sudo chown $USER:$GROUPS /lede
 
-    - name: close source code
+    - name: clone source code
       working-directory: /lede
       run: |
         git clone https://github.com/Huadao1108/lede.git -b master lede
-        cd lede
-        in -sf /lede/lede $GITHUB_WORKSPACE/lede
 
     - name: Load custom feeds
       run: |
