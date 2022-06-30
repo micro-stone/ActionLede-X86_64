@@ -1,5 +1,5 @@
 #build lede
-name: Build OpenWrt
+name: Build lede
 
 on:
   # repository_dispatch:
