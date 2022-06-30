@@ -55,7 +55,7 @@ jobs:
       working-directory: /lede
       run: |
         git clone https://github.com/Huadao1108/lede.git -b master lede
-
+        ln -sf /lede/lede $GITHUB_WORKSPACE/lede
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF lede/feeds.conf.default
