@@ -23,7 +23,7 @@ env:
 
 jobs: 
   build:
-    run-on: ubuntu-20.04
+    runs-on: ubuntu-20.04
 
     steps: 
     - name: Checkout
@@ -43,8 +43,8 @@ jobs:
         sudo chown $USER:$GROUPS /lede
 
     -name: close source code
-    work_space: /lede
-    run: |
+     work_space: /lede
+     run: |
         git clone https://github.com/Huadao1108/lede.git -b master lede
         cd lede
         in -sf /lede/lede $GITHUB_WORKSPACE/lede
