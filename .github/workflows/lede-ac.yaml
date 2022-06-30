@@ -50,16 +50,6 @@ jobs:
           ls
           df -h
 
-      - name: Clone source code
-        working-directory:
-        run: |
-          df -hT $PWD
-          mkdir lede
-          cd lede
-          ls
-          git clone https://github.com/coolsnowwolf/lede.git
-          ls
-
       - name: Update feeds
         run: |
           ./scripts/feeds update -a
