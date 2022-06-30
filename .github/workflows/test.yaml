@@ -43,8 +43,8 @@ jobs:
         sudo chown $USER:$GROUPS /lede
 
     - name: close source code
-     working-directory: /lede
-     run: |
+      working-directory: /lede
+      run: |
         git clone https://github.com/Huadao1108/lede.git -b master lede
         cd lede
         in -sf /lede/lede $GITHUB_WORKSPACE/lede
