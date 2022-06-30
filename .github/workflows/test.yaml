@@ -119,7 +119,6 @@ jobs:
         ls
         cd lede
         ls
-        rm -rf ./bin/targets/packages
         cp -rf ./bin/targets/ ./artifact/firmware/
         cp -rf ./bin/packages/ ./artifact/packages/
         cp -rf ./bin/targets/ ./artifact/buildinfo/
