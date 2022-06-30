@@ -116,6 +116,7 @@ jobs:
         mkdir -p ./artifact/firmware
         mkdir -p ./artifact/package
         mkdir -p ./artifact/buildinfo
+        cd lede
         rm -rf ./bin/targets/packages
         cp -rf ./bin/targets/ ./artifact/firmware/
         cp -rf ./bin/packages/ ./artifact/package/
