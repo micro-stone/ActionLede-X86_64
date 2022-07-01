@@ -126,4 +126,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_firmware
-        path: ${{ github.workspace }}/lede/bin/packages/*.ipk
+        path: ${{ github.workspace }}/lede/bin/packages/
