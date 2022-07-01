@@ -133,10 +133,6 @@ jobs:
     - name: Prepare artifact
       run: |
         cd lede
-        mkdir -p ./artifact
-        mkdir -p ./artifact/firmware
-        mkdir -p ./artifact/packages
-        mkdir -p ./artifact/buildinfo
         ls
         cp -rf ./bin/targets/* ./artifact/firmware/
         cp -rf ./bin/packages/* ./artifact/packages/
