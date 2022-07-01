@@ -71,7 +71,7 @@ jobs:
     - name: 下载Lede源码
       working-directory: /lede
       run: |
-        git clone https://github.com/Huadao1108/lede.git -b master lede
+        git clone https://github.com/coolsnowwolf/lede.git -b master lede
         ln -sf /lede/lede $GITHUB_WORKSPACE/lede
 
     - name: 缓存配置
