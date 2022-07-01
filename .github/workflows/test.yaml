@@ -138,15 +138,8 @@ jobs:
         ls
         cd lede
         ls
-        cp -rf ./bin/targets/ ./artifact/firmware/
-        cp -rf ./bin/packages/ ./artifact/packages/
-        cp -rf ./bin/targets/ ./artifact/buildinfo/
-
-    - name: Deliver buildinfo
-      uses: actions/upload-artifact@v2
-      with:
-        name: OpenWrt_buildinfo
-        path: ./artifact/buildinfo/
+        cp -rf ./bin/targets/* ./artifact/firmware/
+        cp -rf ./bin/packages/* ./artifact/packages/
 
     - name: Deliver package
       uses: actions/upload-artifact@v2
