@@ -122,7 +122,7 @@ jobs:
       run: |
         cd lede
         echo -e "$(nproc) thread compile"
-        make -j$(nproc) V=s
+        make -j$(nproc) V=s || make -j4 V=s
         df -h
         du -h --max-depth=1 ./bin
         ls
