@@ -87,10 +87,10 @@ jobs:
         # echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
 
     - name: 更新插件库
-      run: cd lede && ./scripts/feeds update -a
+      run: cd lede && ./scripts/feeds update -f -a
 
     - name: 安装插件库
-      run: cd lede && ./scripts/feeds install -a
+      run: cd lede && ./scripts/feeds install -f -a
     
     - name: 加载本地配置
       run: |
@@ -124,7 +124,7 @@ jobs:
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j2
         du -h --max-depth=1 ./bin
-        ls ./bin/targets/targets
+        ls ${{ github.workspace }}/lede/bin/targets/
 
     # - name: Prepare artifact
     #   run: |
@@ -140,7 +140,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_firmware
-        path: ./bin/targets/*
+        path: ${{ github.workspace }}/lede/bin/targets/
 
     # - name: Deliver buildinfo
     #   uses: actions/upload-artifact@v2
@@ -159,7 +159,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.YOURTOKEN }}
-        file: ./bin/targets/*
+        file: ${{ github.workspace }}/lede/bin/targets/
         tag: ${{ github.ref }}
         file_glob: true
 
