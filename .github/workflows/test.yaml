@@ -19,7 +19,7 @@ on:
         required: false
         default: 'false'
   schedule:
-    - cron: 00 11 * * * 
+    - cron: 30 4 * * * 
 
 env: 
   FEEDS_CONF: feeds.conf.default
@@ -29,6 +29,7 @@ env:
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: false
+  TZ: Asia/Shanghai
 
 jobs: 
   build:
@@ -122,7 +123,7 @@ jobs:
       run: |
         cd lede
         echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j2
+        make -j2 V=s
         du -h --max-depth=1 ./bin
         ls ${{ github.workspace }}/lede/bin/targets/
 
