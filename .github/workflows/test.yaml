@@ -124,7 +124,8 @@ jobs:
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j2
         du -h --max-depth=1 ./bin
-        ls ./bin/targets
+        ls ./bin/targets/targets
+
     # - name: Prepare artifact
     #   run: |
     #     mkdir -p ./artifact/firmware
@@ -139,7 +140,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_firmware
-        path: ./bin/targets/
+        path: ./bin/targets/*
 
     # - name: Deliver buildinfo
     #   uses: actions/upload-artifact@v2
@@ -218,17 +219,17 @@ jobs:
     #     body_path: release.txt
     #     files: ${{ env.FIRMWARE }}/*
 
-    - name: Delete workflow runs
-      uses: GitRML/delete-workflow-runs@main
-      with:
-        retain_days: 1
-        keep_minimum_runs: 3
+    # - name: Delete workflow runs
+    #   uses: GitRML/delete-workflow-runs@main
+    #   with:
+    #     retain_days: 1
+    #     keep_minimum_runs: 3
 
-    - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@v0.1.0
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-      with:
-        keep_latest: 3
-        delete_tags: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Remove old Releases
+    #   uses: dev-drprasad/delete-older-releases@v0.1.0
+    #   if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+    #   with:
+    #     keep_latest: 3
+    #     delete_tags: true
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
