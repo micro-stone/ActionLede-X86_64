@@ -1,12 +1,4 @@
-#
-# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
-#
-# This is free software, licensed under the MIT License.
-# See /LICENSE for more information.
-#
-# https://github.com/P3TERX/Actions-OpenWrt
-# Description: Build OpenWrt using GitHub Actions
-#
+
 
 name: Build lede
 
@@ -43,18 +35,6 @@ jobs:
         ref: master
         fetch-depth: 0
 
-    # - name: cache
-    #   uses: klever1988/cachewrtbuild@main        
-    #   with:
-    #     #是否一并缓存.ccache目录，如果你启用了ccache。这是唯一的常用参数，其他三个用于除错，一般不需要调整
-    #     ccache: false
-    #     #是否缓存工具链目录
-    #     toolchain: true
-    #     #是否跳过工具链编译
-    #     skip: true
-    #     #清空缓存
-    #     clean: false
-
     - name: 创建环境
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -71,14 +51,20 @@ jobs:
     - name: 下载Lede源码
       working-directory: /lede
       run: |
-        git clone https://github.com/Huadao1108/lede.git -b master lede
+        git clone https://github.com/coolsnowwolf/lede.git -b master lede
         ln -sf /lede/lede $GITHUB_WORKSPACE/lede
 
     - name: 缓存配置
       uses: klever1988/cachewrtbuild@main
       with:
-        ccache: 'true'
+          #是否缓存工具链目录
         prefix: ${{ github.workspace }}/lede
+          #是否一并缓存.ccache目录，如果你启用了ccache。这是唯一的常用参数，其他三个用于除错，一般不需要调整
+        toolchain: true
+          #是否跳过工具链编译
+        skip: true
+          #清空缓存
+        clean: false
 
     - name: 加载本地配置
       run: |
@@ -97,8 +83,8 @@ jobs:
       run: |
         [ -e files ] && mv files lede/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE lede/.config
-        cd lede
-        sed -i 's/10.10.10.2/192.168.50.5/g' package/base-files/files/bin/config_generate
+        cd 
+        sed -i 's/192.168.1.1/10.10.10.2/g' ${{ github.workspace }}/lede/package/base-files/files/bin/config_generate
 
     - name: 编译插件库
       id: package
@@ -112,7 +98,7 @@ jobs:
       run: |
         cd lede
         echo -e "$(nproc) thread compile"
-        make -j2 V=s
+        make -j$(nproc) || make -j1
         du -h --max-depth=1 ./bin
         ls ${{ github.workspace }}/lede/bin/targets/
 
@@ -125,5 +111,5 @@ jobs:
     - name: 上传插件
       uses: actions/upload-artifact@v2
       with:
-        name: OpenWrt_firmware
-        path: ${{ github.workspace }}/lede/bin/packages/*.ipk
+        name: OpenWrt_packages
+        path: ${{ github.workspace }}/lede/bin/packages/
