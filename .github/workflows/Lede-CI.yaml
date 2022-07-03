@@ -1,0 +1,129 @@
+#
+# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
+#
+# This is free software, licensed under the MIT License.
+# See /LICENSE for more information.
+#
+# https://github.com/P3TERX/Actions-OpenWrt
+# Description: Build OpenWrt using GitHub Actions
+#
+
+name: Build lede
+
+on:
+  # repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH Action'
+        required: false
+        default: 'false'
+  schedule:
+    - cron: 30 4 * * * 
+
+env: 
+  FEEDS_CONF: feeds.conf.default
+  CONFIG_FILE: .config
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: true
+  UPLOAD_COWTRANSFER: false
+  UPLOAD_WETRANSFER: false
+  UPLOAD_RELEASE: false
+  TZ: Asia/Shanghai
+
+jobs: 
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        ref: master
+        fetch-depth: 0
+
+    # - name: cache
+    #   uses: klever1988/cachewrtbuild@main        
+    #   with:
+    #     #是否一并缓存.ccache目录，如果你启用了ccache。这是唯一的常用参数，其他三个用于除错，一般不需要调整
+    #     ccache: false
+    #     #是否缓存工具链目录
+    #     toolchain: true
+    #     #是否跳过工具链编译
+    #     skip: true
+    #     #清空缓存
+    #     clean: false
+
+    - name: 创建环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "Asia/Shanghai"
+        sudo mkdir -p /lede
+        sudo chown $USER:$GROUPS /lede
+
+    - name: 下载Lede源码
+      working-directory: /lede
+      run: |
+        git clone https://github.com/Huadao1108/lede.git -b master lede
+        ln -sf /lede/lede $GITHUB_WORKSPACE/lede
+
+    - name: 缓存配置
+      uses: klever1988/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        prefix: ${{ github.workspace }}/lede
+
+    - name: 加载本地配置
+      run: |
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF lede/feeds.conf.default
+        cd lede
+        # echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
+        # echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
+
+    - name: 更新插件库
+      run: cd lede && ./scripts/feeds update -f -a
+
+    - name: 安装插件库
+      run: cd lede && ./scripts/feeds install -f -a
+    
+    - name: 加载本地配置
+      run: |
+        [ -e files ] && mv files lede/files
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE lede/.config
+        cd lede
+        sed -i 's/10.10.10.2/192.168.50.5/g' package/base-files/files/bin/config_generate
+
+    - name: 编译插件库
+      id: package
+      run: |
+        cd lede
+        echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config; make defconfig
+        make download -j8
+        find dl -size -1024c -exec rm -f {} \;
+
+    - name: 完成固件
+      run: |
+        cd lede
+        echo -e "$(nproc) thread compile"
+        make -j2 V=s
+        du -h --max-depth=1 ./bin
+        ls ${{ github.workspace }}/lede/bin/targets/
+
+    - name: 上传固件
+      uses: actions/upload-artifact@v2
+      with:
+        name: OpenWrt_firmware
+        path: ${{ github.workspace }}/lede/bin/targets/
+
+    - name: 上传插件
+      uses: actions/upload-artifact@v2
+      with:
+        name: OpenWrt_firmware
+        path: ${{ github.workspace }}/lede/bin/packages/*.ipk
