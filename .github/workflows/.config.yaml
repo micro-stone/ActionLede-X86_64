@@ -82,7 +82,7 @@ jobs:
     - name: 定位到指定目录
       run: |
         ls
-        cd ${{ github.workspace }}/lede && make menuconfig
+        cd /home/work/runner/work/ActionLede-X86_64/ActionLede-X86_64/lede && make menuconfig
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -95,4 +95,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_firmware
-        path: ${{ github.workspace }}/lede/.config
+        path: /home/work/runner/work/ActionLede-X86_64/ActionLede-X86_64/lede/.config
