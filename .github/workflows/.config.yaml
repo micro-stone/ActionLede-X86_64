@@ -82,7 +82,7 @@ jobs:
     - name: 定位到指定目录
       run: |
         ls
-        cd ${{ github.workspace }}/lede
+        cd ${{ github.workspace }}/lede && make menuconfig
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
