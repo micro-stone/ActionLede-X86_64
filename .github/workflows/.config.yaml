@@ -85,7 +85,7 @@ jobs:
     - name: 打包文件
       run: |
         cd lede
-        tar jxvf config.zip ${{ github.workspace }}/lede/.config
+        tar -cfv config.tar ${{ github.workspace }}/lede/.config
         ls
 
     - name: 上传config
