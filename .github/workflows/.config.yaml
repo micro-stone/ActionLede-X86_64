@@ -89,11 +89,11 @@ jobs:
         ls
         mkdir -p ${{ github.workspace }}/lede/test
         sudo chmod 777 ${{ github.workspace }}/lede/test
-        sudo mv -f config.tar /test
+        sudo mv -f config.tar ${{ github.workspace }}/lede/test/
         ls ${{ github.workspace }}/lede/test/
 
     - name: 上传config
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_.config
-        path: ${{ github.workspace }}/lede/test/
+        path: ${{ github.workspace }}/lede/test/*
