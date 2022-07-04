@@ -13,12 +13,8 @@ on:
 
 env: 
   SSH_ACTIONS	SSH: false
-  FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
-  UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: false
   TZ: Asia/Shanghai
 
@@ -86,8 +82,13 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
+    - name: 打包文件
+      run: |
+      cd lede
+      zip -r config.zip .config
+
     - name: 上传config
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_.config
-        path: /lede/.config
+        path: /lede/config.zip
