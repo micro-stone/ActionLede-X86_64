@@ -87,8 +87,8 @@ jobs:
         cd ${{ github.workspace }}/lede/
         sudo tar cfv config.tar .config
         ls
-        mkdir test
-        sudo chmod +x test
+        mkdir -p ${{ github.workspace }}/lede/test
+        sudo chmod 777 ${{ github.workspace }}/lede/test
         sudo mv -f config.tar /test
         ls ${{ github.workspace }}/lede/test/
 
