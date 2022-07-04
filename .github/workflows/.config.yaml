@@ -80,7 +80,9 @@ jobs:
       run: cd lede && ./scripts/feeds install -f -a
 
     - name: 定位到指定目录
-      run: cd ${{ github.workspace }}/lede && make menuconfig
+      run: |
+        ls
+        cd ${{ github.workspace }}/lede
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
