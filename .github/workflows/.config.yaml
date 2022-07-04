@@ -87,7 +87,7 @@ jobs:
         cd lede
         mkdir config
         tar cfv config.tar ${{ github.workspace }}/lede/.config
-        mv config.tar /config
+        mv -f config.tar /config
         ls
 
     - name: 上传config
