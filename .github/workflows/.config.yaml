@@ -84,11 +84,12 @@ jobs:
 
     - name: 打包文件
       run: |
-        sudo -i
         cd ${{ github.workspace }}/lede/
-        tar cfv config.tar .config
-        ls 
-        mv -f config.tar /test
+        sudo tar cfv config.tar .config
+        ls
+        mkdir test
+        sudo chmod +x test
+        sudo mv -f config.tar /test
         ls ${{ github.workspace }}/lede/test/
 
     - name: 上传config
