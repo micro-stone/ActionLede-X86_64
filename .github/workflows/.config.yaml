@@ -1,6 +1,6 @@
 
 
-name: Build lede
+name: Build .config
 
 on:
   # repository_dispatch:
