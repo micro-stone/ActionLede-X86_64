@@ -84,14 +84,14 @@ jobs:
 
     - name: 打包文件
       run: |
-        cd lede
-        mkdir config
-        tar cfv config.tar ${{ github.workspace }}/lede/.config
-        mv -f config.tar /config
+        sudo -i
+        cd ${{ github.workspace }}/lede/
+        tar cfv config.tar .config
+        mv -f config.tar /test
         ls
 
     - name: 上传config
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_.config
-        path: ${{ github.workspace }}/lede/config
+        path: ${{ github.workspace }}/lede/test/
