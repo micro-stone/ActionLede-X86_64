@@ -90,10 +90,10 @@ jobs:
         cd ${{ github.workspace }}/lede/
         sudo tar cfv config.tar .config
         ls
-        mkdir -p ${{ github.workspace }}/lede/test
-        sudo chmod 777 ${{ github.workspace }}/lede/test
-        sudo mv -f config.tar ${{ github.workspace }}/lede/test/
-        ls ${{ github.workspace }}/lede/test/
+        mkdir -p ${{ github.workspace }}/lede/file
+        sudo chmod 777 ${{ github.workspace }}/lede/file
+        sudo mv -f config.tar ${{ github.workspace }}/lede/file/
+        ls ${{ github.workspace }}/lede/file/
 
     - name: 上传config
       uses: actions/upload-artifact@v2
