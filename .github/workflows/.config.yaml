@@ -99,4 +99,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_.config
-        path: ${{ github.workspace }}/lede/test/*
+        path: ${{ github.workspace }}/lede/file/*
