@@ -79,11 +79,6 @@ jobs:
     - name: 安装插件库
       run: cd lede && ./scripts/feeds install -f -a
 
-    - name: 定位到指定目录
-      run: |
-        ls
-        cd lede
-
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
@@ -95,4 +90,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_.config
-        path: ${{ github.workspace }}/lede/CONFIG_FILE
+        path: /lede/.config
