@@ -92,8 +92,18 @@ jobs:
         sudo mv -f config.tar ${{ github.workspace }}/lede/test/
         ls ${{ github.workspace }}/lede/test/
 
-    - name: 上传config
-      uses: actions/upload-artifact@v2
+    # - name: 上传config
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: OpenWrt_.config
+    #     path: ${{ github.workspace }}/lede/test/*
+
+    - name: .config
+      if: github.event == 'release'
+      uses: svenstaro/upload-release-action@v2
       with:
-        name: OpenWrt_.config
-        path: ${{ github.workspace }}/lede/test/*
+        repo_token: ${{ secrets.YOURTOKEN }}
+        file: ${{ github.workspace }}/lede/test/
+        tag: master
+        file_glob: true
+        body: "Lede配置文件"
