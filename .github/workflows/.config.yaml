@@ -94,5 +94,5 @@ jobs:
     - name: 上传config
       uses: actions/upload-artifact@v2
       with:
-        name: OpenWrt_firmware
-        path: ${{ github.workspace }}/lede/.config
+        name: OpenWrt_.config
+        path: ${{ github.workspace }}/lede/CONFIG_FILE
