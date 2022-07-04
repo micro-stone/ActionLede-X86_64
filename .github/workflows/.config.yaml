@@ -9,9 +9,7 @@ on:
       ssh:
         description: 'SSH Action'
         required: false
-        default: 'false'
-  schedule:
-    - cron: 30 4 * * * 
+        default: 'true'
 
 env: 
   SSH_ACTIONS	SSH: false
@@ -87,12 +85,6 @@ jobs:
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-
-    - name: 更新插件库
-      run: cd lede && ./scripts/feeds update -f -a
-
-    - name: 安装插件库
-      run: cd lede && ./scripts/feeds install -f -a
 
     - name: 上传config
       uses: actions/upload-artifact@v2
