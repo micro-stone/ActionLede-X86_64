@@ -87,8 +87,9 @@ jobs:
         sudo -i
         cd ${{ github.workspace }}/lede/
         tar cfv config.tar .config
+        ls 
         mv -f config.tar /test
-        ls
+        ls ${{ github.workspace }}/lede/test/
 
     - name: 上传config
       uses: actions/upload-artifact@v2
