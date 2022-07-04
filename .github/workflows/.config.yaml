@@ -86,9 +86,10 @@ jobs:
       run: |
         cd lede
         zip -r config.zip .config
+        ls
 
     - name: 上传config
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_.config
-        path: /lede/config.zip
+        path: ${{ github.workspace }}/lede/config.zip
