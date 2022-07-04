@@ -64,6 +64,7 @@ jobs:
 
     - name: 加载本地配置
       run: |
+        ls
         cd lede
 
     - name: 更新插件库
