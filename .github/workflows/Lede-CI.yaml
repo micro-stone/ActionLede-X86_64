@@ -61,17 +61,6 @@ jobs:
         git clone https://github.com/coolsnowwolf/lede.git -b master lede
         ln -sf /lede/lede $GITHUB_WORKSPACE/lede
 
-    - name: cache
-      uses: klever1988/cachewrtbuild@main
-      with:
-        #是否一并缓存.ccache目录，如果你启用了ccache。这是唯一的常用参数，其他三个用于除错，一般不需要调整
-        ccache: false
-        #是否缓存工具链目录
-        toolchain: true
-        #是否跳过工具链编译
-        skip: true
-        #清空缓存
-        clean: false
 
     - name: 缓存配置
       uses: klever1988/cachewrtbuild@main
@@ -98,6 +87,18 @@ jobs:
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE lede/.config
         cd lede
         sed -i 's/10.10.10.2/192.168.50.5/g' package/base-files/files/bin/config_generate
+        
+    - name: cache
+      uses: klever1988/cachewrtbuild@main
+      with:
+        #是否一并缓存.ccache目录，如果你启用了ccache。这是唯一的常用参数，其他三个用于除错，一般不需要调整
+        ccache: false
+        #是否缓存工具链目录
+        toolchain: true
+        #是否跳过工具链编译
+        skip: true
+        #清空缓存
+        clean: false
 
     - name: 编译插件库
       id: package
