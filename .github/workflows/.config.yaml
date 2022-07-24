@@ -41,14 +41,14 @@ jobs:
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "Asia/Shanghai"
-        sudo mkdir -p /lede
-        sudo chown $USER:$GROUPS /lede
+        sudo mkdir -p /OpenWrt
+        sudo chown $USER:$GROUPS /OpenWrt
 
     - name: 下载Lede源码
-      working-directory: /lede
+      working-directory: /OpenWrt
       run: |
         git clone https://github.com/coolsnowwolf/lede.git -b master lede
-        ln -sf /lede/lede $GITHUB_WORKSPACE/lede
+        ln -sf /OpenWrt/lede $GITHUB_WORKSPACE/lede
 
     - name: 缓存配置
       uses: klever1988/cachewrtbuild@main
