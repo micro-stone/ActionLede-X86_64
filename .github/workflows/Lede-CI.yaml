@@ -97,14 +97,22 @@ jobs:
         cd ${{ github.workspace }}/lede
         make -j$(nproc) || make -j1 V=s
 
+    - name: Prepare artifact
+      run: |
+        cd ${{ github.workspace }}/lede
+        mkdir -p ${{ github.workspace }}/lede/artifact/firmware 
+        mkdir -p ${{ github.workspace }}/lede/artifact/packages
+        cp -rf $(find ${{ github.workspace }}/lede/bin/targets/ -type f) ./artifact/firmware/
+        cp -rf $(find ${{ github.workspace }}/lede/bin/packages/ -type f -name "*.ipk") ./artifact/packages/
+
     - name: 上传固件
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_firmware
-        path: ${{ github.workspace }}/lede/bin/targets/
+        path: ${{ github.workspace }}/lede/artifact/firmware
 
     - name: 上传插件
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_firmware
-        path: ${{ github.workspace }}/lede/bin/packages/*.ipk
+        path: ${{ github.workspace }}/lede/artifact/packages
