@@ -62,7 +62,7 @@ jobs:
           #是否跳过工具链编译
         skip: true
           #清空缓存
-        clean: false
+        clean: true
 
     - name: 加载本地文件
       run: |
