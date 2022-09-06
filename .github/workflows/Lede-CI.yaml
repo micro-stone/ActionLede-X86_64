@@ -76,11 +76,6 @@ jobs:
 
     - name: 安装插件库
       run: cd ${{ github.workspace }}/lede && ./scripts/feeds install -f -a
-    
-    - name: 加载本地配置
-      run: |
-        cd ${{ github.workspace }}/lede
-        make defconfig
         
     - name: 覆盖写入配置文件
       run: |
@@ -94,6 +89,7 @@ jobs:
       id: package
       run: |
         cd ${{ github.workspace }}/lede
+        make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
