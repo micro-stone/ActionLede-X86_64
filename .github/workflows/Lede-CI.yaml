@@ -81,7 +81,6 @@ jobs:
       run: |
         cd ${{ github.workspace }}/lede
         make defconfig
-        ll
         
     - name: 覆盖写入配置文件
       run: |
