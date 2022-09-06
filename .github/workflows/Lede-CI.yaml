@@ -81,9 +81,9 @@ jobs:
       run: |
         cd ${{ github.workspace }}/lede
         make defconfig
-        ls
+        ll
         
-    - name: 覆盖写入.config文件
+    - name: 覆盖写入配置文件
       run: |
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE lede/.config
         cd ${{ github.workspace }}/lede
