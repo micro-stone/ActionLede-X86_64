@@ -104,8 +104,8 @@ jobs:
         cd ${{ github.workspace }}/lede
         mkdir -p ${{ github.workspace }}/lede/artifact/firmware 
         mkdir -p ${{ github.workspace }}/lede/artifact/packages
-        cp -rf $(find ${{ github.workspace }}/lede/bin/targets/ -type f) ./artifact/firmware/
-        cp -rf $(find ${{ github.workspace }}/lede/bin/packages/ -type f -name "*.ipk") ./artifact/packages/
+        cp -rf $(find ${{ github.workspace }}/lede/bin/targets/* -type f) ./artifact/firmware/
+        cp -rf $(find ${{ github.workspace }}/lede/bin/packages/* -type f -name "*.ipk") ./artifact/packages/
 
     - name: 上传固件
       uses: actions/upload-artifact@v2
