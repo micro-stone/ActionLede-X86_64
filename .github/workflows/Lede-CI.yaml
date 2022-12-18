@@ -80,10 +80,9 @@ jobs:
     - name: 覆盖写入配置文件
       run: |
         make defconfig
-        [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE lede/.config
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE lede/.config
         cd ${{ github.workspace }}/lede
         sed -i 's/OpenWrt/Jayha/g' package/base-files/files/bin/config_generate
-        sed -i 's/192.168.1.1/192.168.3.10/g' package/base-files/files/bin/config_generate
 
     - name: 编译插件库
       id: package
