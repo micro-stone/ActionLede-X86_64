@@ -115,7 +115,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: OpenWrt_firmware
-        path: $(find ${{ github.workspace }}/lede/bin/targets/fireware.zip
+        path: ${{ github.workspace }}/lede/bin/targets/fireware.zip
 
 #     - name: 上传插件
 #       uses: actions/upload-artifact@v2
