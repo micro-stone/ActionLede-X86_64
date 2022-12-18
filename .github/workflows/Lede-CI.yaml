@@ -79,20 +79,20 @@ jobs:
         
     - name: 覆盖写入配置文件
       run: |
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE lede/.config
+        make defconfig
+        [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE lede/.config
         cd ${{ github.workspace }}/lede
-        echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config;
-        rm -rf .config.old
-        sed -i 's/192.168.1.1/192.168.2.10/g' package/base-files/files/bin/config_generate
+        sed -i 's/OpenWrt/Jayha/g' package/base-files/files/bin/config_generate
+        sed -i 's/192.168.1.1/192.168.3.10/g' package/base-files/files/bin/config_generate
 
     - name: 编译插件库
       id: package
       run: |
         cd ${{ github.workspace }}/lede
-        make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+        make download -j8 V=s
 
     - name: 完成固件
       run: |
