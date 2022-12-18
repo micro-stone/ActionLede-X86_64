@@ -101,6 +101,7 @@ jobs:
         make -j$(nproc) || make -j1 V=s
         cd ${{ github.workspace }}/lede/bin/targets
         zip -p -r fireware.zip ${{ github.workspace }}/lede/bin/targets
+        ls ${{ github.workspace }}/lede/bin/targets
 
 #     - name: Prepare artifact
 #       run: |
