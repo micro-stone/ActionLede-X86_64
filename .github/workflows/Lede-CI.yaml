@@ -13,7 +13,7 @@ on:
 
 env: 
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: X86_64.config
+  CONFIG_FILE: .config
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
