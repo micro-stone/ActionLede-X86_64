@@ -82,7 +82,7 @@ jobs:
       run: |
         cd ${{ github.workspace }}/lede
         make defconfig
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $GITHUB_WORKSPACE/lede/.config
+        [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE $GITHUB_WORKSPACE/lede/.config
         cd ${{ github.workspace }}/lede
         sed -i 's/192.168.1.1/192.168.3.10/g' package/base-files/files/bin/config_generate
         sed -i 's/OpenWrt/Jayha/g' package/base-files/files/bin/config_generate
