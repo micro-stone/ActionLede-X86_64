@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style text="text/css">
-
-    </style>
 </head>
 <body>
     <h1>Action-x86_64 云Lede编译项目</h1>
