@@ -94,18 +94,16 @@ jobs:
       id: package
       run: |
         cd ${{ github.workspace }}/lede
-        make download -j8
+        make download -j1
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-        make download -j8 V=s
+        make download -j1 V=s
 
     - name: 完成固件
       run: |
         cd ${{ github.workspace }}/lede
-        make -j$(nproc) || make -j1 V=s
-        cd ${{ github.workspace }}/lede/bin/targets
+        make -j1 V=s
         zip -p -r fireware.zip ${{ github.workspace }}/lede/bin/targets
-        ls ${{ github.workspace }}/lede/bin/targets
 
 #     - name: Prepare artifact
 #       run: |
