@@ -48,7 +48,7 @@ jobs:
     - name: 下载Lede源码
       working-directory: /OpenWrt
       run: |
-        cd ${{ github.workspace }}/OpenWrt
+        mkdir ${{ github.workspace }}/OpenWrt && cd ${{ github.workspace }}/OpenWrt
         git clone https://github.com/coolsnowwolf/lede.git -b master lede
         ln -sf /OpenWrt/lede $GITHUB_WORKSPACE/lede
 
