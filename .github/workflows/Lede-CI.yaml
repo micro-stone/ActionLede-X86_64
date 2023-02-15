@@ -1,7 +1,6 @@
-name: Build lede
+name: 编译OpenWrt系统
 
 on:
-  # repository_dispatch:
   workflow_dispatch:
     inputs:
       ssh:
@@ -12,25 +11,24 @@ on:
     - cron: 30 4 * * 1,5
 
 env: 
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   UPLOAD_BIN_DIR: false
-  UPLOAD_FIRMWARE: true
+  UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: false
   TZ: Asia/Shanghai
 
-jobs: 
+jobs:
   build:
     runs-on: ubuntu-20.04
 
     steps:
-
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        ref: master
+    - name: 检查
+      uses: actions/checkout@main
 
     - name: 创建环境
       env:
@@ -41,57 +39,44 @@ jobs:
         sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
-        sudo timedatectl set-timezone "Asia/Shanghai"
-        sudo mkdir -p /OpenWrt
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /OpenWrt
 
     - name: 下载Lede源码
       working-directory: /OpenWrt
       run: |
-        mkdir ${{ github.workspace }}/OpenWrt && cd ${{ github.workspace }}/OpenWrt
-        git clone https://github.com/coolsnowwolf/lede.git -b master lede
-        ln -sf /OpenWrt/lede $GITHUB_WORKSPACE/lede
-
-    # - name: 缓存配置
-    #   uses: klever1988/cachewrtbuild@main
-    #   with:
-    #     ccache: false
-    #       #是否缓存工具链目录
-    #     prefix: ${{ github.workspace }}/lede
-    #       #是否一并缓存.ccache目录，如果你启用了ccache。这是唯一的常用参数，其他三个用于除错，一般不需要调整
-    #     toolchain: false
-    #       #是否跳过工具链编译
-    #     skip: false
-    #       #清空缓存
-    #     clean: false
+        df -hT $PWD
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        ln -sf /OepWrt/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: 加载本地文件
       run: |
-        cd ${{ github.workspace }}/lede
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF lede/feeds.conf.default
+        cd openwrt
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
         # echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
         # echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
 
     - name: 更新插件库
-      run: cd ${{ github.workspace }}/lede && ./scripts/feeds update -f -a
+      run: cd openwrt && ./scripts/feeds update -f -a
 
     - name: 安装插件库
-      run: cd ${{ github.workspace }}/lede && ./scripts/feeds install -f -a
+      run: cd openwrt && ./scripts/feeds install -f -a
         
     - name: 覆盖写入配置文件
       run: |
-        cd ${{ github.workspace }}/lede
+        cd openwrt
         make defconfig
         cd ..
-        [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE lede/
-        cd ${{ github.workspace }}/lede
+        [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE openwrt/
+        cd openwrt
         sed -i 's/192.168.1.1/192.168.3.10/g' package/base-files/files/bin/config_generate
         sed -i 's/OpenWrt/Jayha/g' package/base-files/files/bin/config_generate
 
     - name: 编译插件库
       id: package
       run: |
-        cd ${{ github.workspace }}/lede
+        cd openwrt
         make download -j8 || make download -j1 V=s
         rm -rf $(find ./dl/ -size -1024c)
         df -h
@@ -106,35 +91,36 @@ jobs:
         echo "======================="
         du -h ./ --max-depth=1
         du -h /mnt/openwrt/ --max-depth=1 || true
-#       zip -p -r fireware.zip ${{ github.workspace }}/lede/bin/targets
+        zip -p -r fireware.zip ${{ github.workspace }}/openwrt/bin/targets
 
-    - name: Prepare artifact
-      run: |
-        mkdir -p ./artifact/firmware
-        mkdir -p ./artifact/package
-        mkdir -p ./artifact/buildinfo
-        rm -rf $(find ./bin/targets/ -type d -name "packages")
-        cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
-        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
-        cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
-
-    - name: 上传插件
+    - name: 上传固件
       uses: actions/upload-artifact@v3
       with:
         name: OpenWrt_firmware
-        path: ./bin/targets/
-#     - name: Prepare artifact
-#       run: |
-#         cd ${{ github.workspace }}/lede
-#         mkdir -p ${{ github.workspace }}/lede/artifact/firmware 
-#         mkdir -p ${{ github.workspace }}/lede/artifact/packages
-#         cp -rf $(find ${{ github.workspace }}/lede/bin/targets/* -type f) ./artifact/firmware/
-#         cp -rf $(find ${{ github.workspace }}/lede/bin/packages/* -type f -name "*.ipk") ./artifact/packages/
+        path: ${{ github.workspace }}/openwrt/bin/targets/fireware.zip
 
-    # - name: 上传固件
+    # - name: Prepare artifact
+    #   run: |
+    #     mkdir -p ./artifact/firmware
+    #     mkdir -p ./artifact/package
+    #     mkdir -p ./artifact/buildinfo
+    #     rm -rf $(find ./bin/targets/ -type d -name "packages")
+    #     cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
+    #     cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
+    #     cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
+
+    # - name: 上传插件
     #   uses: actions/upload-artifact@v3
     #   with:
     #     name: OpenWrt_firmware
-    #     path: ${{ github.workspace }}/lede/bin/targets/fireware.zip
+    #     path: ./bin/targets/
+#     - name: Prepare artifact
+#       run: |
+#         cd ${{ github.workspace }}/openwrt
+#         mkdir -p ${{ github.workspace }}/openwrt/artifact/firmware 
+#         mkdir -p ${{ github.workspace }}/openwrt/artifact/packages
+#         cp -rf $(find ${{ github.workspace }}/openwrt/bin/targets/* -type f) ./artifact/firmware/
+#         cp -rf $(find ${{ github.workspace }}/openwrt/bin/packages/* -type f -name "*.ipk") ./artifact/packages/
+
 
 
