@@ -46,6 +46,7 @@ jobs:
     - name: 下载Lede源码
       working-directory: /OpenWrt
       run: |
+        sudo mkdir -p /OpenWrt
         cd OpenWrt
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
@@ -69,7 +70,7 @@ jobs:
         cd OpenWrt
         make defconfig
         cd ..
-        [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE openwrt/
+        [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE openwrt/.config
         cd openwrt
         sed -i 's/192.168.1.1/192.168.3.10/g' package/base-files/files/bin/config_generate
         sed -i 's/OpenWrt/Jayha/g' package/base-files/files/bin/config_generate
