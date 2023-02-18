@@ -41,20 +41,21 @@ jobs:
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /OpenWrt
-        sudo chown $USER:$GROUPS /OpenWrt
+        sudo chown $USER:$GROUPS OpenWrt
 
     - name: 下载Lede源码
       working-directory: /OpenWrt
       run: |
-        sudo mkdir -p /OpenWrt
-        cd OpenWrt
         df -hT $PWD
+        ls
+        cd /OpenWrt
+        ls
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /OepWrt/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: 加载本地文件
       run: |
-        cd OpenWrt
+        cd openwrt
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
         # echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
         # echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
@@ -67,7 +68,7 @@ jobs:
         
     - name: 覆盖写入配置文件
       run: |
-        cd OpenWrt
+        cd openwrt
         make defconfig
         cd ..
         [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE openwrt/.config
@@ -78,7 +79,7 @@ jobs:
     - name: 编译插件库
       id: package
       run: |
-        cd OpenWrt
+        cd openwrt
         make download -j8 || make download -j1 V=s
         rm -rf $(find ./dl/ -size -1024c)
         df -h
