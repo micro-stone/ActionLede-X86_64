@@ -41,7 +41,7 @@ jobs:
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /OpenWrt
-        sudo chown $USER:$GROUPS OpenWrt
+        sudo chown $USER:$GROUPS /OpenWrt
 
     - name: 下载Lede源码
       working-directory: /OpenWrt
