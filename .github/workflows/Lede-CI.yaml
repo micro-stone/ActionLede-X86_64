@@ -56,8 +56,8 @@ jobs:
     - name: 加载本地文件
       run: |
         cd /OpenWrt/openwrt
-        rm -rf /OpenWrt/openwrt/feeds.conf.default
-        [ -e $FEEDS_CONF ] && mv -f $FEEDS_CONF /OpenWrt/openwrt/feeds.conf.default
+        make defconfig
+        [ -e $FEEDS_CONF ] && mv -f $FEEDS_CONF feeds.conf.default
         # echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
         # echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
 
@@ -70,8 +70,6 @@ jobs:
     - name: 覆盖写入配置文件
       run: |
         cd /OpenWrt/openwrt
-        make defconfig
-        cd ..
         [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE /OpenWrt/openwrt/.config
         cd /OpenWrt/openwrt
         sed -i 's/192.168.1.1/192.168.3.10/g' package/base-files/files/bin/config_generate
