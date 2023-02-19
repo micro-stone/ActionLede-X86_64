@@ -81,14 +81,7 @@ jobs:
 
     - name: 完成固件
       run: |
-        make -j$(nproc) || make -j1 V=s
-        echo "======================="
-        echo "Space usage:"
-        echo "======================="
-        df -h
-        echo "======================="
-        du -h ./ --max-depth=1
-        du -h /mnt/openwrt/ --max-depth=1 || true
+        make -j1 V=s
         zip -p -r fireware.zip /OpenWrt/openwrt/bin/targets
 
     - name: 上传固件
