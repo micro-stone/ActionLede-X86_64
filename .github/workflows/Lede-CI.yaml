@@ -79,36 +79,10 @@ jobs:
       run: |
         cd /OpenWrt/openwrt
         make -j1 V=s
-        zip -p -r fireware.zip /OpenWrt/openwrt/bin/targets
 
     - name: 上传固件
       uses: actions/upload-artifact@v3
       with:
         name: OpenWrt_firmware
-        path: /OpenWrt/openwrt/bin/targets/fireware.zip
-
-    # - name: Prepare artifact
-    #   run: |
-    #     mkdir -p ./artifact/firmware
-    #     mkdir -p ./artifact/package
-    #     mkdir -p ./artifact/buildinfo
-    #     rm -rf $(find ./bin/targets/ -type d -name "packages")
-    #     cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
-    #     cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
-    #     cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
-
-    # - name: 上传插件
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: OpenWrt_firmware
-    #     path: ./bin/targets/
-#     - name: Prepare artifact
-#       run: |
-#         cd ${{ github.workspace }}/openwrt
-#         mkdir -p ${{ github.workspace }}/openwrt/artifact/firmware 
-#         mkdir -p ${{ github.workspace }}/openwrt/artifact/packages
-#         cp -rf $(find ${{ github.workspace }}/openwrt/bin/targets/* -type f) ./artifact/firmware/
-#         cp -rf $(find ${{ github.workspace }}/openwrt/bin/packages/* -type f -name "*.ipk") ./artifact/packages/
-
-
+        path: /OpenWrt/openwrt/bin/targets/
 
