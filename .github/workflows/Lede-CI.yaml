@@ -77,7 +77,7 @@ jobs:
       run: |
         cd /OpenWrt/openwrt
         make download -j8 || make download -j1 V=s
-        rm -rf $(find ./dl/ -size -1024c)
+        rm -rf $(find ./dl/ -size -1024c);
         df -h
 
     - name: 完成固件
