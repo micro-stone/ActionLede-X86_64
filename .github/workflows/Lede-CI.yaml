@@ -77,6 +77,7 @@ jobs:
 
     - name: 完成固件
       run: |
+        cd /OpenWrt/openwrt
         make -j1 V=s
         zip -p -r fireware.zip /OpenWrt/openwrt/bin/targets
 
