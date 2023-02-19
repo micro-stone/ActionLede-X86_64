@@ -71,13 +71,12 @@ jobs:
 
     - name: 安装插件库
       run: cd /OpenWrt/openwrt && ./scripts/feeds install -f -a
-        
 
     - name: 编译插件库
       id: package
       run: |
         cd /OpenWrt/openwrt
-        make menuconfig
+        make defconfig
         make download -j8 V=s
 
     - name: 完成固件
