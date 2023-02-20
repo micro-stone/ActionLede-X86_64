@@ -70,6 +70,7 @@ jobs:
       run: |
         cd /OpenWrt/openwrt
         make defconfig
+        sudo rm -rf .config && sudo rm -rf .config.old
         [ -e $CONFIG_FILE ] && cp -f $CONFIG_FILE .config
 
     - name: 编译插件库
