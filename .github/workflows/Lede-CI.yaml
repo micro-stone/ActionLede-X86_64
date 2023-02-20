@@ -13,8 +13,8 @@ on:
 env: 
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: .config
+  FEEDS_CONF: config/feeds.conf.default
+  CONFIG_FILE: config/.config
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
@@ -68,8 +68,7 @@ jobs:
 
     - name: 覆盖写入配置文件
       run: |
-        cd /OpenWrt/openwrt
-        [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE /OpenWrt/openwrt/.config
+        [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE $GITHUB_WORKSPACE/openwrt/.config
 
     - name: 编译插件库
       id: package
