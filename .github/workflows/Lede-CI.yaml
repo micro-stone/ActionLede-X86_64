@@ -69,7 +69,7 @@ jobs:
     - name: 覆盖写入配置文件
       run: |
         cd /OpenWrt/openwrt
-        ls
+        ll
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE /OpenWrt/openwrt/.config
 
     - name: 编译插件库
