@@ -52,9 +52,8 @@ jobs:
 
     - name: 覆写写入插件配置
       run: |
+        [ -e $FEEDS_CONF ] && mv -f $FEEDS_CONF /OpenWrt/openwrt/feeds.conf.default
         cd /OpenWrt/openwrt
-        echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
-        echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
         sed -i 's/192.168.1.1/192.168.3.10/g' package/base-files/files/bin/config_generate
         sed -i 's/OpenWrt/Jayha/g' package/base-files/files/bin/config_generate
 
@@ -68,7 +67,6 @@ jobs:
 
     - name: 覆盖写入配置文件
       run: |
-        [ -e $FEEDS_CONF ] && mv -f $FEEDS_CONF /OpenWrt/openwrt/feeds.conf.default
         [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE /OpenWrt/openwrt/.config
 
     - name: 编译插件库
