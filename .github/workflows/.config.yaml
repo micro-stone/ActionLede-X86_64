@@ -12,7 +12,6 @@ on:
         default: 'true'
 
 env: 
-  FEEDS_CONF: feeds.conf.default
   SSH_ACTIONS	SSH: false
   CONFIG_FILE: config/.config
   FEEDS_CONF: config/feeds.conf.default
