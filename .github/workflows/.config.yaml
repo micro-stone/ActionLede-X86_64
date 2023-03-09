@@ -1,6 +1,6 @@
 
 
-name: Build .config
+name: 生成配置文件
 
 on:
   # repository_dispatch:
@@ -14,7 +14,8 @@ on:
 env: 
   FEEDS_CONF: feeds.conf.default
   SSH_ACTIONS	SSH: false
-  CONFIG_FILE: .config
+  CONFIG_FILE: config/.config
+  FEEDS_CONF: config/feeds.conf.default
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: false
   TZ: Asia/Shanghai
@@ -66,9 +67,6 @@ jobs:
     - name: 加载本地配置
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF lede/feeds.conf.default
-        cd ${{ github.workspace }}/lede
-        # echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
-        # echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
 
     - name: 更新插件库
       run: |
@@ -78,8 +76,12 @@ jobs:
       run: |
         cd ${{ github.workspace }}/lede && ./scripts/feeds install -f -a
 
+    - name: 覆盖写入配置文件
+      run: |
+        [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE /OpenWrt/openwrt/.config
+
     - name: SSH connection to Actions
-      uses: P3TERX/ssh2actions@v1.0.0
+      uses: P3TERX/ssh2actions@main
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -88,15 +90,14 @@ jobs:
     - name: 打包文件
       run: |
         cd ${{ github.workspace }}/lede/
-        sudo tar cfv config.tar .config
-        ls
+        sudo zip -r config.zip .config
         mkdir -p ${{ github.workspace }}/lede/file
         sudo chmod 777 ${{ github.workspace }}/lede/file
-        sudo mv -f config.tar ${{ github.workspace }}/lede/file/
+        sudo mv -f config.zip ${{ github.workspace }}/lede/file/
         ls ${{ github.workspace }}/lede/file/
 
     - name: 上传config
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: OpenWrt_.config
         path: ${{ github.workspace }}/lede/file/*
